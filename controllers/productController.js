@@ -1,5 +1,12 @@
+let Product = require('../models/product')
+
 exports.productList = (req, res, next) => {
-  res.send('NOT IMPLEMENTED: See list of products')
+  Product.find()
+    .sort({name: 1})
+    .exec((err, listProducts) => {
+      if (err) return next(err)
+      res.render('product_list', { title: 'Product List', productList: listProducts })
+    })
 }
 
 exports.productDetail = (req, res, next) => {

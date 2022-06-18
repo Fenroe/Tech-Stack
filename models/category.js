@@ -8,7 +8,7 @@ const CategorySchema = new Schema({
 
 CategorySchema
 .virtual('url')
-.get(() => {
+.get(function () {
   return `/categories/${this._id}`
 })
 

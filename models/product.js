@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const ProductSchema = new Schema({
+let ProductSchema = new Schema({
   name: {type: String, required: true},
   category: {type: Schema.Types.ObjectId, ref: 'Category', required: true},
   brand: {type: Schema.Types.ObjectId, ref: 'Brand', required: true},
@@ -13,19 +13,19 @@ const ProductSchema = new Schema({
 
 ProductSchema
 .virtual('url')
-.get(() => {
+.get(function () {
   return `/products/${this._id}`
 })
 
 ProductSchema
 .virtual('price_formatted')
-.get(() => {
+.get(function () {
   return `$${this.price / 100}`
 })
 
 ProductSchema
 .virtual('in_stock_formatted')
-.get(() => {
+.get(function () {
   if (this.in_stock > 10) return 'More than 10 in stock'
   if (this.in_stock > 0) return `${this.in_stock} left in stock`
   return 'Out of stock'

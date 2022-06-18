@@ -10,13 +10,13 @@ const BrandSchema = new Schema({
 
 BrandSchema
 .virtual('url')
-.get(() => {
+.get(function () {
   return `/brands/${this._id}`
 })
 
 BrandSchema
 .virtual('year_founded_formatted')
-.get(() => {
+.get(function () {
   return `NOT IMPLEMENTED YET ${this.year_founded}`
 })
 
