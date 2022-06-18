@@ -16,11 +16,14 @@
     </ul>
   </nav>
   <main>
-    <% productList.map((product) => { %>
-      <div>
-        <a href="<%= product.url %>"><%= product.name %></a>
-      </div>
-      <% }) %>
+    <section>
+      <h1><%= category.name %></h1>
+      <% categoryProducts.map((product) => { %>
+        <div>
+          <a href="<%= product.url %>"><%= product.name %></a>
+        </div>
+        <% }) %>
+    </section>
   </main>
 </body>
 </html>

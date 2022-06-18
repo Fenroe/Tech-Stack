@@ -1,9 +1,39 @@
+const Product = require('../models/product')
+const Brand = require('../models/brand')
+const Category = require('../models/category')
+
+const async = require('async')
+
 exports.categoryList = (req, res, next) => {
-  res.send('NOT IMPLEMENTED: See list of categories')
+  Category.find()
+    .sort({name: 1})
+    .exec((err, listCategories) => {
+      if (err) return next(err)
+      res.render('category_list', { title: 'Category List', categoryList: listCategories })
+    }) 
 }
 
 exports.categoryDetail = (req, res, next) => {
-  res.send('NOT IMPLEMENTED: See category page')
+  
+  async.parallel({
+    category: (callback) => {
+      Category.findById(req.params.id)
+        .exec(callback)
+    },
+
+    categoryProducts: (callback) => {
+      Product.find({'category': req.params.id})
+        .exec(callback)
+    },
+  }, (err, results) => {
+    if (err) return next(err)
+    if (results.category == null) {
+      const err = new Error('Category not found')
+      err.status = 404
+      return next(err)
+    }
+    res.render('category_detail', { title: results.category.name, category: results.category, categoryProducts: results.categoryProducts })
+  })
 }
 
 exports.categoryCreateGet = (req, res, next) => {

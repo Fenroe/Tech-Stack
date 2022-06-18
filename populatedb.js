@@ -67,11 +67,11 @@ const categoryCreate = (name, cb) => {
 }
 
 
-const brandCreate = (name, year_founded, description, cb) => {
+const brandCreate = (name, date_founded, description, cb) => {
   const brand_detail = {
     name
   }
-  if (year_founded != false) brand_detail.year_founded = year_founded
+  if (date_founded != false) brand_detail.date_founded = date_founded
   if (description != false) brand_detail.description = description
 
   const brand = new Brand(brand_detail)

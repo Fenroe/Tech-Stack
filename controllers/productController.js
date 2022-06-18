@@ -1,4 +1,8 @@
 let Product = require('../models/product')
+let Brand = require('../models/brand')
+let Category = require('../models/category')
+
+const async = require('async')
 
 exports.productList = (req, res, next) => {
   Product.find()
@@ -10,7 +14,18 @@ exports.productList = (req, res, next) => {
 }
 
 exports.productDetail = (req, res, next) => {
-  res.send('NOT IMPLEMENTED: See product page')
+  Product.findById(req.params.id)
+    .populate('brand')
+    .populate('category')
+    .exec((err, product) => {
+      if (err) return next(err)
+      if (product == null) {
+        const err = new Error('Product not found')
+        err.status = 404
+        return next(err)
+      }
+      res.render('product_detail', { title: product.name, product: product })
+    })
 }
 
 exports.productCreateGet = (req, res, next) => {

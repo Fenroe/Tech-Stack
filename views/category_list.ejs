@@ -16,9 +16,9 @@
     </ul>
   </nav>
   <main>
-    <% productList.map((product) => { %>
+    <% categoryList.map((category) => { %>
       <div>
-        <a href="<%= product.url %>"><%= product.name %></a>
+        <a href="<%= category.url %>"><%= category.name %></a>
       </div>
       <% }) %>
   </main>

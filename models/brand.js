@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const dayjs = require('dayjs')
+
 const Schema = mongoose.Schema
 
 const BrandSchema = new Schema({
@@ -15,9 +17,9 @@ BrandSchema
 })
 
 BrandSchema
-.virtual('year_founded_formatted')
+.virtual('date_founded_formatted')
 .get(function () {
-  return `NOT IMPLEMENTED YET ${this.year_founded}`
+  return `Founded ${dayjs(this.date_founded).format('MMMM YYYY')}`
 })
 
 module.exports = mongoose.model('Brand', BrandSchema)

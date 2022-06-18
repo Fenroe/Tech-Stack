@@ -20,7 +20,7 @@ ProductSchema
 ProductSchema
 .virtual('price_formatted')
 .get(function () {
-  return `$${this.price / 100}`
+  return `$${(this.price / 100).toFixed(2)}`
 })
 
 ProductSchema
