@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/categories">Categories</a></li>
+      <li><a href="/brands">Brands</a></li>
+    </ul>
+  </nav>
+  <main>
+    <section>
+      <form method="POST" action="">
+        <h1>Add New Brand</h1>
+        <div>
+          <label for="name">Name of brand</label>
+          <input required name="name" id="name" type="text" value="<$= brand ? brand.name : '' $>">
+        </div>
+        <div>
+          <label for="date_founded">Date founded</label>
+          <input required name="date_founded" id="date_founded" type="date" placeholder="mm/dd/yyyy" value="<$= brand ? brand.date_founded : '' $>">
+        </div>
+        <div>
+          <label for="description">Description</label>
+          <input required name="description" id="description" type="text" value="<$= brand ? brand.description : '' $>">
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

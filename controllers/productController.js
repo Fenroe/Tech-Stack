@@ -29,7 +29,23 @@ exports.productDetail = (req, res, next) => {
 }
 
 exports.productCreateGet = (req, res, next) => {
-  res.send('NOT IMPLEMENTED: See product create form')
+
+  async.parallel({
+    categories: (callback) => {
+      Category.find()
+        .sort({name: 1})
+        .exec(callback)
+    },
+
+    brands: (callback) => {
+      Brand.find()
+        .sort({name: 1})
+        .exec(callback)
+    },
+  }, (err, results) => {
+    if (err) return next(err)
+    res.render('product_form', { title: 'Add New Product', categories: results.categories, brands: results.brands })
+  })
 }
 
 exports.productCreatePost = (req, res, next) => {

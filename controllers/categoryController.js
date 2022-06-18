@@ -4,6 +4,8 @@ const Category = require('../models/category')
 
 const async = require('async')
 
+const { body,validationResult } = require("express-validator")
+
 exports.categoryList = (req, res, next) => {
   Category.find()
     .sort({name: 1})
@@ -37,12 +39,36 @@ exports.categoryDetail = (req, res, next) => {
 }
 
 exports.categoryCreateGet = (req, res, next) => {
-  res.send('NOT IMPLEMENTED: See category create form')
+  res.render('category_form', { title: 'Add New Category' })
 }
 
-exports.categoryCreatePost = (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Logic for category create form POST')
-}
+exports.categoryCreatePost = [
+  body('name', 'Category name required').trim().isLength({ min: 1}).escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req)
+    const category = new Category({ name: req.body.name })
+    if (!errors.isEmpty()) {
+      res.render('category_form', { title: 'Add New Category', category: category, errors: errors.array()})
+      return
+    }
+    else {
+      Category.findOne({ 'name': req.body.name })
+        .exec((err, foundCategory) => {
+          if (err) return next(err)
+          if (foundCategory) {
+            res.redirect(foundCategory.url)
+          }
+          else {
+            category.save((err) => {
+              if (err) return next(err)
+              res.redirect(category.url)
+            })
+          }
+        })
+    }
+  }
+]
 
 exports.categoryDeleteGet = (req, res, next) => {
   res.send('NOT IMPLEMENTED: See category delete form')

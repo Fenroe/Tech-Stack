@@ -4,6 +4,8 @@ const Category = require('../models/category')
 
 const async = require('async')
 
+const { body,validationResult } = require("express-validator")
+
 exports.brandList = (req, res, next) => {
   Brand.find()
     .sort({name: 1})
@@ -37,12 +39,41 @@ exports.brandDetail = (req, res, next) => {
 }
 
 exports.brandCreateGet = (req, res, next) => {
-  res.send('NOT IMPLEMENTED: See brand create form')
+  res.render('brand_form', { title: 'Add New Brand'})
 }
 
-exports.brandCreatePost = (req, res, next) => {
-  res.send('NOT IMPLEMENTED: Logic for brand create form POST')
-}
+exports.brandCreatePost = [
+  body('name', 'Name must not be empty.').trim().isLength({ min: 1 }).escape(),
+  body('date_founded', 'Invalid founding date.').optional({ checkFalsy: true }).isISO8601().toDate(),
+  body('description', 'Description must not be empty.').trim().isLength({ min: 1 }).escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req)
+    const brand = new Brand({
+      name: req.body.name,
+      date_founded: req.body.date_founded,
+      description: req.body.description
+    })
+    if (!errors.isEmpty()) {
+      res.render('brand_form', { title: 'Add New Brand', brand: brand, errors: errors.array() })
+      return
+    } else {
+      Brand.findOne({ 'name': req.body.name })
+        .exec((err, foundBrand) => {
+          if (err) return next(err)
+          if (foundBrand) {
+            res.redirect(foundBrand.url)
+          }
+          else {
+            brand.save((err) => {
+              if (err) return next(err)
+              res.redirect(brand.url)
+            })
+          }
+        })
+    }
+  }
+]
 
 exports.brandDeleteGet = (req, res, next) => {
   res.send('NOT IMPLEMENTED: See brand delete form')

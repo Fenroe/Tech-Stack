@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/categories">Categories</a></li>
+      <li><a href="/brands">Brands</a></li>
+    </ul>
+  </nav>
+  <main>
+    <section>
+      <form method="POST" action="">
+        <h1>Add New Product</h1>
+        <div>
+          <label for="name">Name of product</label>
+          <input required name="name" id="name" type="text" value="<%= product ? product.name : '' %>">
+        </div>
+        <div>
+          <label for="product_brand">Brand</label>
+          <select name="product_brand" id="product_brand">
+            <% brands.map((brand) => { %>
+              <option value="<%= brand._id %>"><%= brand.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div>
+          <label for="product-category">Category</label>
+          <select name="product-category" id="product-category">
+            <% categories.map((category) => { %>
+              <option value="<%= category._id %>"><%= category.name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div>
+          <label for="product-price">Price in USD</label>
+          <input required name="product-price" id="product-price" type="number" placeholder="eg: 29.95" value="<%= product ? product.price : '' %>">
+        </div>
+        <div>
+          <label for="product-in-stock">How many in stock</label>
+          <input required name="product-in-stock" id="product-in-stock" type="number" placeholder="eg: 0, 4, 10" value="<%= product ? product.in_stock : '' %>">
+        </div>
+        <div>
+          <label for="product-description">Description</label>
+          <input required name="product-description" id="product-description" type="text" value="<%= product ? product.description : '' %>">
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

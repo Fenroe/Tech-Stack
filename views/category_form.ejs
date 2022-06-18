@@ -16,12 +16,16 @@
     </ul>
   </nav>
   <main>
-    <% categoryList.map((category) => { %>
-      <div>
-        <a href="<%= category.url %>"><%= category.name %></a>
-      </div>
-      <% }) %>
-      <a href="/categories/create">Add category</a>
+    <section>
+      <form method="POST" action="">
+        <h1>Add New Category</h1>
+        <div>
+          <label for="name">Name of category</label>
+          <input required name="name" id="name" type="text" value="<$= category ? category.name : '' $>">
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </section>
   </main>
 </body>
 </html>
